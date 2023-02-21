@@ -1,5 +1,10 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const app = express();
+
+dotenv.config({path: './config.env'});
+require('./db/conn.js');
+const PORT = process.env.PORT;
 
 app.get('/', (req, res) => {
   res.send('Hello world from server');
@@ -21,4 +26,4 @@ app.get('/signup', (req, res) => {
   res.send('Hello signup world from server');
 });
 
-app.listen(3000, () => console.log('server is running at port 3000'));
+app.listen(PORT, () => console.log(`server is running at port ${PORT}`));
