@@ -6,6 +6,9 @@ dotenv.config({path: './config.env'});
 require('./db/conn.js');
 const PORT = process.env.PORT;
 
+app.use(express.json());
+app.use(require('./router/auth'));
+
 app.get('/', (req, res) => {
   res.send('Hello world from server');
 });
