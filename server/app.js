@@ -21,9 +21,9 @@ app.get('/contact', (req, res) => {
   res.send('Hello contact world from server');
 });
 
-app.get('/signin', (req, res) => {
-  res.send('Hello signin world from server');
-});
+// app.get('/signin', (req, res) => {
+//   res.send('Hello signin world from server');
+// });
 
 app.get('/signup', (req, res) => {
   res.send('Hello signup world from server');

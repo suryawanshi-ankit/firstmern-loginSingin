@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {User, userValidation} = require('../model/userSchema');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
   res.send('Hello world from Router file');
@@ -29,13 +31,24 @@ router.post('/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password)
-      return res.status(400).send("Please fill the data");
+      return res.status(400).send("Invalid Credientials...");
 
     user = await User.findOne({email: req.body.email});
-    if (user.password === password)
-      return res.status(201).send(user);
+
+    if (!user) return res.status(400).send("Invalid Credientials...");
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (isPasswordMatch) {
+      const token = await user.generateAuthToken();
+      res.cookie("jwttoken", token, {
+        expires: new Date(Date.now() + 258920000),
+        httpOnly: true
+      });
+      return res.status(201).send({message: 'User signin succesfull', data: user});
+    }
     else
-      return res.status(400).send("Invalid User...");
+      return res.status(400).send("Invalid Credientials...");
 
   } catch (err) {
     return res.status(201).send(user);
