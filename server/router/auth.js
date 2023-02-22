@@ -14,6 +14,8 @@ router.post('/register', async (req, res) => {
     let user = await User.findOne({email: req.body.email});
     if (user) return res.status(422).send("allready exists this email");
 
+    if(req.body.password !== req.body.cPassword) return res.status(422).send("password & confirm password is different!!!");
+
     user = new User(req.body);
     user = await user.save();
     if (user) return res.status(201).send(user);

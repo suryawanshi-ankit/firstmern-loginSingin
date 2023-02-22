@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema({
   name: {
@@ -28,7 +29,6 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model('USER', userSchema);
 
 const userValidation = (user) => {
   const schema = {
@@ -42,5 +42,15 @@ const userValidation = (user) => {
   return Joi.validate(user, schema);
 }
 
+userSchema.pre('save', async function(next) {
+  if(this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    this.cPassword = await bcrypt.hash(this.password, salt);
+  }
+  next();
+});
+
+const User = mongoose.model('USER', userSchema);
 exports.User = User;
 exports.userValidation = userValidation;
