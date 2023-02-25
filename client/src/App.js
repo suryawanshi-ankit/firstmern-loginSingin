@@ -6,6 +6,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import ErrorPage from './components/ErrorPage';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <Route exact path='/about' element={<About />}></Route>
       <Route exact path='/contact' element={<Contact />}></Route>
       <Route exact path='/login' element={<Login />}></Route>
-      <Route exact path='/signup'element={<Signup />}></Route>
+      <Route exact path='/signup' element={<Signup />}></Route>
+      <Route path='*' element={<ErrorPage />}></Route>
       </Routes>
     </>
   );
