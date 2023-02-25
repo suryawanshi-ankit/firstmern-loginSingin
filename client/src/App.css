@@ -68,6 +68,12 @@ body, html, .App, #root, .auth-wrapper {
 }
 
 .col-contact {
-  padding-right: 16px;
+  margin-right: 16px;
   background-color: white;
+  padding: 22px 5px;
+  border-radius: 20px;
+  /* height: 100px; */
+  /* justify-content: center; */
+  /* align-items: center; */
+
 }
