@@ -65,6 +65,7 @@ body, html, .App, #root, .auth-wrapper {
   margin: 50px 500px;
   background-color: white;
   padding: 50px;
+  border-radius: 20px;
 }
 
 .col-contact {
@@ -72,8 +73,17 @@ body, html, .App, #root, .auth-wrapper {
   background-color: white;
   padding: 22px 5px;
   border-radius: 20px;
-  /* height: 100px; */
-  /* justify-content: center; */
-  /* align-items: center; */
+}
 
+.home-page {
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.edit-button {
+  border: none;
+  border-radius: 4px;
 }
