@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../utils/constant';
 import '../App.css';
 
 const Signup = () => {
@@ -19,9 +20,9 @@ const Signup = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/register', user);
+      const res = await axios.post(`${BASE_URL}register`, user);
       console.log(res);
-      alert("Registration is Completed!!!")
+      alert("Registration is Completed!!!");
       navigate('/login');
     } catch (e) {
       alert("Something went wrong Try again!!!");

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {User, userValidation} = require('../model/userSchema');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res) => {
   res.send('Hello world from Router file');
@@ -23,7 +22,7 @@ router.post('/register', async (req, res) => {
     if (user) return res.status(201).send(user);
 
   } catch (err) {
-    return res.status(201).send(user);
+    return res.status(422).send(user);
   }
 });
 
@@ -41,11 +40,7 @@ router.post('/signin', async (req, res) => {
 
     if (isPasswordMatch) {
       const token = await user.generateAuthToken();
-      res.cookie("jwttoken", token, {
-        expires: new Date(Date.now() + 258920000),
-        httpOnly: true
-      });
-      return res.status(201).send({message: 'User signin succesfull', data: user});
+      return res.status(201).send({message: 'User signin succesfull', token: token, data: user});
     }
     else
       return res.status(400).send("Invalid Credientials...");
