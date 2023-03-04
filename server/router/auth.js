@@ -55,4 +55,27 @@ router.get('/about', authenticate, (req, res) => {
   res.send(req.rootUser);
 });
 
+router.get('/getData', authenticate, (req, res) => {
+  res.send(req.rootUser);
+});
+
+router.post('/contact', authenticate, async (req, res) => {
+  res.send('Hello contact world from server');
+  try {
+    const { name, email, phone, message } = req.body;
+    if (!name && !email && !phone && !message)
+      return res.json({error: "Contact form info is not filled"});
+
+    const userContact = await User.findOne({_id: req.userId});
+
+    if (userContact) {
+      const userMessage = await userContact.addMessage(name, email, phone, message);
+    }
+
+
+  } catch (error) {
+    return res.status(201).send(error);
+  }
+});
+
 module.exports = router;
