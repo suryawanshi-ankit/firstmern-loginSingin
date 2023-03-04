@@ -41,7 +41,7 @@ router.post('/signin', async (req, res) => {
 
     if (isPasswordMatch) {
       const token = await user.generateAuthToken();
-      return res.status(201).send({message: 'User signin succesfull', token: token, data: user});
+      return res.status(200).send({message: 'User signin succesfull', token: token, data: user});
     }
     else
       return res.status(400).send("Invalid Credientials...");
@@ -52,11 +52,11 @@ router.post('/signin', async (req, res) => {
 });
 
 router.get('/about', authenticate, (req, res) => {
-  res.status(201).send(req.rootUser);
+  res.status(200).send(req.rootUser);
 });
 
 router.get('/getData', authenticate, (req, res) => {
-  res.status(201).send(req.rootUser);
+  res.status(200).send(req.rootUser);
 });
 
 router.post('/contact', authenticate, async (req, res) => {

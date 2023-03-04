@@ -107,3 +107,10 @@ body, html, .App, #root, .auth-wrapper {
   color: white;
   text-decoration: underline;
 }
+
+.logout-btn {
+  background-color: inherit;
+  border: none;
+  margin-top: 7px;
+  color: rebeccapurple;
+}

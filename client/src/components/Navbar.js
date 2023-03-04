@@ -1,8 +1,17 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const handleLogout = () => {
+    cookies.remove('jwttoken');
+    navigate('/');
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,6 +36,9 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/signup">Registration</Link>
+            </li>
+            <li className="nav-item">
+              <button className='logout-btn' onClick={handleLogout}>Logout</button>
             </li>
           </ul>
         </div>
