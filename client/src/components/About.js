@@ -1,10 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Person from '../images/Person.svg';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import { BASE_URL } from '../utils/constant';
+import { useNavigate } from 'react-router-dom';
 
 const About = () => {
+
+  const [userData, setUserData] = useState({});
+
+  const navigate = useNavigate();
+  const callAboutPage = async () => {
+    try {
+      const cookies = new Cookies();
+      const token = cookies.get('jwttoken');
+      const res = await axios({
+        method: 'get',
+        url: `${BASE_URL}about`,
+        headers: {
+          'Autth-token': token
+        }
+      })
+      if (res.status !== 200) {
+         const error = new Error(new Error);
+         throw error;
+      }
+      setUserData(res.data);
+      
+    } catch (error) {
+      console.log(error);
+      navigate('/login');
+    }
+  }
+
+  useEffect(() => {
+    callAboutPage();
+  }, [])
+  
   return (
     <>
-      <div className='form-main'>
+      <div className='form-main text-capitalize'>
         <form method=''>
           <div className='row'>
             <div className='col-md-4'>
@@ -12,8 +47,8 @@ const About = () => {
             </div>
             <div className='col-md-6'>
               <div>
-                <h5>Ankit Suryawanshi</h5>
-                <h6>Web Developer</h6>
+                <h5>{userData.name}</h5>
+                <h6>{userData.work}</h6>
                 <p>RANKINGS: 1/10</p>
               </div>
             </div>
@@ -36,23 +71,23 @@ const About = () => {
               </h6>
               <div className='row mt-2'>
                 <div className='col-md-6'>UserID</div>
-                <div className='col-md-6'>1111111</div>
+                <div className='col-md-6'>{userData._id}</div>
               </div>
               <div className='row'>
                 <div className='col-md-6'>Name</div>
-                <div className='col-md-6'>Ankit</div>
+                <div className='col-md-6'>{userData.name}</div>
               </div>
               <div className='row'>
                 <div className='col-md-6'>Email</div>
-                <div className='col-md-6'>ankit@123</div>
+                <div className='col-md-6'>{userData.email}</div>
               </div>
               <div className='row'>
                 <div className='col-md-6'>Phone</div>
-                <div className='col-md-6'>9876543210</div>
+                <div className='col-md-6'>{userData.phone}</div>
               </div>
               <div className='row'>
                 <div className='col-md-6'>Profession</div>
-                <div className='col-md-6'>Web Developer</div>
+                <div className='col-md-6'>{userData.work}</div>
               </div>
             </div>
           </div>

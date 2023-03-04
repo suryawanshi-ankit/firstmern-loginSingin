@@ -15,9 +15,9 @@ app.get('/', (req, res) => {
   res.send('Hello world from server');
 });
 
-app.get('/about', (req, res) => {
-  res.send('Hello about world from server');
-});
+// app.get('/about', (req, res) => {
+//   res.send('Hello about world from server');
+// });
 
 app.get('/contact', (req, res) => {
   res.send('Hello contact world from server');

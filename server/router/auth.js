@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {User, userValidation} = require('../model/userSchema');
 const bcrypt = require('bcryptjs');
+const authenticate = require('../middlware/authenticate');
 
 router.get('/', (req, res) => {
   res.send('Hello world from Router file');
@@ -46,8 +47,12 @@ router.post('/signin', async (req, res) => {
       return res.status(400).send("Invalid Credientials...");
 
   } catch (err) {
-    return res.status(201).send(user);
+    return res.status(201).send(err);
   }
+});
+
+router.get('/about', authenticate, (req, res) => {
+  res.send(req.rootUser);
 });
 
 module.exports = router;
