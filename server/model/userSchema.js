@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: Date.now()
   },
-  message: [
+  messages: [
     {
       name: {
         type: String,
@@ -98,9 +98,9 @@ userSchema.methods.generateAuthToken = async function() {
 
 userSchema.methods.addMessage = async function(name, email, phone, message) {
   try {
-    this.message = this.message.concat({name, email, phone, message});
-    await this.save();
-    res.status(200).json({message: "User Contact Successfully!!!"});
+    this.messages = this.messages.concat({name, email, phone, message});
+    const newdata = await this.save();
+    return newdata;
   } catch (error) {
     console.log('addmessage: ', error);
   }

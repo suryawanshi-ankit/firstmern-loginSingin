@@ -52,15 +52,14 @@ router.post('/signin', async (req, res) => {
 });
 
 router.get('/about', authenticate, (req, res) => {
-  res.send(req.rootUser);
+  res.status(201).send(req.rootUser);
 });
 
 router.get('/getData', authenticate, (req, res) => {
-  res.send(req.rootUser);
+  res.status(201).send(req.rootUser);
 });
 
 router.post('/contact', authenticate, async (req, res) => {
-  res.send('Hello contact world from server');
   try {
     const { name, email, phone, message } = req.body;
     if (!name && !email && !phone && !message)
@@ -70,6 +69,7 @@ router.post('/contact', authenticate, async (req, res) => {
 
     if (userContact) {
       const userMessage = await userContact.addMessage(name, email, phone, message);
+      res.status(201).send(userMessage);
     }
 
 

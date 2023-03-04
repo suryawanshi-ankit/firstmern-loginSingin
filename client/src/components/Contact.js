@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
+import { json, useNavigate } from 'react-router-dom';
 
 const Contact = () => {
 
@@ -9,6 +10,7 @@ const Contact = () => {
   const cookies = new Cookies();
   const token = cookies.get('jwttoken');
 
+  const navigate = useNavigate();
   const callAboutPage = async () => {
     try {
       const res = await axios({
@@ -26,7 +28,7 @@ const Contact = () => {
       
     } catch (error) {
       console.log(error);
-      // navigate('/login');
+      navigate('/login');
     }
   }
 
@@ -44,11 +46,10 @@ const Contact = () => {
   const submitMessage = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios({
-        method: 'post',
-        url: `${BASE_URL}contact`,
+      const res = await axios.post(`${BASE_URL}contact`, userData, {
         headers: {
-          'Autth-token': token
+          'Autth-token': token,
+          'Content-Type': 'application/json'
         }
       })
       if (res.data) {
