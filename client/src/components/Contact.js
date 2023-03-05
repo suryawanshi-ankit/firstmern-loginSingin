@@ -1,41 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
+import React, { useState, useEffect } from 'react';
+import { getUserDetails } from '../utils/api';
+import { getToken } from '../utils/cookies';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
-import { json, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
-
-  const [userData, setUserData] = useState({name: '', email: '', phone: '', message: ''});
-  const cookies = new Cookies();
-  const token = cookies.get('jwttoken');
-
   const navigate = useNavigate();
-  const callAboutPage = async () => {
-    try {
-      const res = await axios({
-        method: 'get',
-        url: `${BASE_URL}getdata`,
-        headers: {
-          'Autth-token': token
-        }
-      })
-      if (res.status !== 200) {
-         const error = new Error(new Error);
-         throw error;
-      }
-      setUserData({...userData, name: res.data.name, email: res.data.email, phone: res.data.phone, message: res.data.message});
-      
-    } catch (error) {
-      console.log(error);
+  const [userData, setUserData] = useState({name: '', email: '', phone: '', message: ''});
+  const token = getToken();
+  
+  const getUserDetail = async () => {
+    const data = await getUserDetails();
+    if (data.name === 'Error')
       navigate('/login');
-    }
+    setUserData({...userData, name: data.name, email: data.email, phone: data.phone, message: data.message});
   }
 
   useEffect(() => {
-    callAboutPage();
+    getUserDetail();
   }, [])
-
   
   const handleChange = (e) => {
     const name = e.target.name;

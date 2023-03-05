@@ -1,39 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import { BASE_URL } from '../utils/constant';
+import { getUserDetails } from '../utils/api';
 
 const Home = () => {
-
   const [userName, setUserName] = useState('');
 
-  const callAboutPage = async () => {
-    try {
-      const cookies = new Cookies();
-      const token = cookies.get('jwttoken');
-      const res = await axios({
-        method: 'get',
-        url: `${BASE_URL}about`,
-        headers: {
-          'Autth-token': token
-        }
-      })
-      if (res.status !== 200) {
-         const error = new Error(new Error);
-         throw error;
-      }
-      setUserName(res.data.name);
-      
-    } catch (error) {
-      console.log(error);
-    }
+  const getUserDetail = async () => {
+    const response = await getUserDetails();
+    console.log(response);
+    setUserName(response.name);
   }
 
   useEffect(() => {
-    callAboutPage();
+    getUserDetail();
   }, [])
-
-  console.log(userName);
 
   return (
     <>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Person from '../images/Person.svg';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import { BASE_URL } from '../utils/constant';
+import { getUserDetails } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 const About = () => {
@@ -10,32 +8,17 @@ const About = () => {
   const [userData, setUserData] = useState({});
 
   const navigate = useNavigate();
-  const callAboutPage = async () => {
-    try {
-      const cookies = new Cookies();
-      const token = cookies.get('jwttoken');
-      const res = await axios({
-        method: 'get',
-        url: `${BASE_URL}about`,
-        headers: {
-          'Autth-token': token
-        }
-      })
-      if (res.status !== 200) {
-         const error = new Error(new Error);
-         throw error;
-      }
-      setUserData(res.data);
-      
-    } catch (error) {
-      console.log(error);
+ 
+  const getUserDetail = async () => {
+    const response = await getUserDetails();
+    if (response.name === 'Error')
       navigate('/login');
-    }
+    setUserData(response);
   }
 
   useEffect(() => {
-    callAboutPage();
-  }, [])
+    getUserDetail();
+  }, [])  
   
   return (
     <>

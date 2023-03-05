@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constant';
-import Cookies from 'universal-cookie';
+import { setToken } from '../utils/cookies';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,10 +15,7 @@ const Login = () => {
     try {
       const res = await axios.post(`${BASE_URL}signin`, {email: email, password: password});
       console.log(res);
-      const cookies = new Cookies();
-      cookies.set('jwttoken', res.data.token, {
-        expires: new Date(Date.now() + 258920000),
-      });
+      setToken(res.data.token);
       alert("Login is Done!!!");
       navigate('/');
     } catch (e) {
