@@ -6,7 +6,6 @@ const Home = () => {
 
   const getUserDetail = async () => {
     const response = await getUserDetails();
-    console.log(response);
     setUserName(response.name);
   }
 

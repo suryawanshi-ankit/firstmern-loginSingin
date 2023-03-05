@@ -21,7 +21,6 @@ const Signup = () => {
     e.preventDefault();
     try {
       const res = await axios.post(`${BASE_URL}register`, user);
-      console.log(res);
       alert("Registration is Completed!!!");
       navigate('/login');
     } catch (e) {

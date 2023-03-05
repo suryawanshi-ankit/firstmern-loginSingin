@@ -9,12 +9,10 @@ const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  console.log(email, password);
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${BASE_URL}signin`, {email: email, password: password});
-      console.log(res);
       setToken(res.data.token);
       alert("Login is Done!!!");
       navigate('/');
