@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+
+  const [isUserLogin, setIsUserLogin] = useState(false);
+
   const navigate = useNavigate();
   const cookies = new Cookies();
+
   const handleLogout = () => {
     cookies.remove('jwttoken');
     navigate('/');
+    setIsUserLogin(false);
   }
+
+  useEffect(() => {
+    const token = cookies.get('jwttoken');
+    if (token)
+      setIsUserLogin(true);
+  }, [cookies.get('jwttoken')])
+  
 
   return (
     <>
@@ -31,15 +43,17 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/contact">Contact</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Login</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/signup">Registration</Link>
-            </li>
-            <li className="nav-item">
+            {!isUserLogin && <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/signup">Registration</Link>
+              </li>
+            </>}
+            {isUserLogin && <li className="nav-item">
               <button className='logout-btn' onClick={handleLogout}>Logout</button>
-            </li>
+            </li>}
           </ul>
         </div>
       </nav>
